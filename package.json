@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/worms-ekb/game#readme",
   "dependencies": {
-    "express": "^4.15.3"
+    "express": "^4.15.3",
+    "rxjs": "^5.4.0"
   }
 }
