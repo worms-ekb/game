@@ -8,7 +8,7 @@ function initTouch() {
     window.addEventListener('touchend', evt => {
         handleTouch(end, evt);
 
-        fire(end.x - start.x, end.y - start.y);
+        fire(start.x, start.y, end.x - start.x, end.y - start.y);
         clear();
     }, false);
     window.addEventListener('touchcancel', clear, false);
