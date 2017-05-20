@@ -1,0 +1,1 @@
+const TouchControl = require('./touch')
