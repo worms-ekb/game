@@ -22,7 +22,6 @@ function create() {
         pointY += Math.random() * 0.5 * trand * height / 2;
         if (pointY > height * 0.9 || pointY < height * 0.4) {
           trand *= -1
-          console.log('trand change');
         }
         var point = new Phaser.Point(pointX, pointY)
 
