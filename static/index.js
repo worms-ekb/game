@@ -124,20 +124,21 @@ function create() {
     ground.body.setCollisionGroup(groundCollisionGroup);
     ground.body.collides(wormCollisionGroup, landWorm, this);
 
-    speechRecognizer = new WormsSpeachRecognizer(['прыжок', 'влево', 'вправо'])
+    speechRecognizer = new WormsSpeachRecognizer(['прыжок', 'влево', 'вправо', 'Лего'])
 
     speechRecognizer.onResult(handleSpeechCommand)
+    setInterval(() => {speechRecognizer.start()}, 1000)
     speechRecognizer.start()
 }
 
 function handleSpeechCommand(command) {
-    if (command.includes('влево')) {
+    if (~command.indexOf('лев') || ~command.includes('Лего')) {
         moveLeft(worm, 300)
     }
-    if (command.includes('вправо')) {
+    if (~command.indexOf('прав') || ~command.indexOf('брав')) {
         moveRight(worm, 300)
     }
-    if (command.includes('прыжок')) {
+    if (~command.indexOf('прыж') || ~command.indexOf('прыг')) {
         jump(worm)
     }
 }
@@ -148,8 +149,8 @@ function setWormCollisions(worm) {
 }
 
 function landWorm() {
+    console.log('land')
     worm._jumped = false
-    speechRecognizer.start()
 }
 
 function jump(worm) {

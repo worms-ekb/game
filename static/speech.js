@@ -11,7 +11,7 @@ class WormsSpeachRecognizer {
       commands.join(' | ') +
       ' ;'
     this.recognition = new SpeechRecognition()
-    this.recognition.continuous = true
+    // this.recognition.continuous = true
     var speechRecognitionList = new SpeechGrammarList()
     speechRecognitionList.addFromString(grammar, 1)
     this.recognition.grammars = speechRecognitionList
@@ -20,12 +20,11 @@ class WormsSpeachRecognizer {
     this.recognition.interimResults = false
     this.recognition.maxAlternatives = 1
 
-    // this.recognition.onspeechend = () => {
-    //   console.log('End', this._started)
-
-    //   this._started = false
-    //   this.recognition.stop()
-    // }
+    this.recognition.onspeechend = () => {
+      console.log('End', this._started)
+      this._started = false
+      this.recognition.stop()
+    }
   }
 
   start() {
