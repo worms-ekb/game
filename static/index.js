@@ -45,6 +45,7 @@ function preload() {
   game.load.image('fire2', 'assets/particles/fire2.png');
   game.load.image('fire3', 'assets/particles/fire3.png');
   game.load.image('smoke', 'assets/particles/smoke.png');
+   game.load.audio('boom_sound', 'assets/sounds/Explosion2.wav');
 }
 
 function gerPoygon() {
@@ -236,6 +237,7 @@ function fire (x, y, dx, dy) {
   setTimeout(function () {
       bullet.mass = 2000;
       drawBoom(bullet.centerX, bullet.centerY);
+      window.navigator.vibrate(300);
 
       bullet.kill();
   }, 2000)
@@ -269,4 +271,8 @@ function drawBoom(x, y) {
     emitter.setScale(0.8, 0, 0.8, 0, 3000);
 
     emitter.start(false, 500, 5, 20);
+
+    var music = game.add.audio('boom_sound');
+
+    music.play();
 }
