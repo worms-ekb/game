@@ -227,20 +227,22 @@ function fire (x, y, dx, dy) {
 
 function createBullet (game, start, diff) {
   var sprite = game.add.sprite(worm.body.x, worm.body.y - 50, 'grenade');
-  game.physics.p2.enable(sprite, true);
+  game.physics.p2.enable(sprite);
   sprite.scale.x = 0.2
   sprite.scale.y = 0.2
   sprite.body.clearShapes();
   sprite.body.loadPolygon('physics', 'grenade', 0.2);
   sprite.body.setCollisionGroup(bulletCollisionGroup);
-  sprite.body.collides([groundCollisionGroup, wormCollisionGroup, bulletCollisionGroup], () => {}, this);
+  sprite.body.collides([groundCollisionGroup, wormCollisionGroup, bulletCollisionGroup]);
 
 
 	sprite.body.fixedRotation = true;
   sprite.body.velocity.x = -diff.dx * 10
   sprite.body.velocity.y = -diff.dy * 10
-  // sprite.body.onBeginContact.add(function(body, bodyB, shapeA, shapeB, equation){
-  //   console.log(body, bodyB, shapeA, shapeB, equation);
-  // }, this);
+  sprite.body.onBeginContact.add(function(body, bodyB, shapeA, shapeB, equation) {
+    if (body && body.sprite.key === 'ground') {
+      bullet.kill()
+    }
+  }, this);
   return sprite
 }
