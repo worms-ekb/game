@@ -161,6 +161,9 @@ function handleSpeechCommand(command) {
     if (~command.indexOf('прыж') || ~command.indexOf('прыг')) {
         jump(worm)
     }
+    if (~command.indexOf('го')) {
+        fire(0, 0, -50, 50)
+    }
 }
 
 function setWormCollisions(worm) {
