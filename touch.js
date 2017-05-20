@@ -8,7 +8,7 @@ class TouchControl {
   }
 
   onDrag(handler) {
-    var a = this.touchStart$
+    return this.touchStart$
       .first()
       .merge(this.touchEnd$.first())
       .map(({ changedTouches }) => [
