@@ -22,6 +22,7 @@ var wormScale = .5;
 var speechRecognizer;
 var groundCollisionGroup;
 var wormCollisionGroup;
+var bulletCollisionGroup;
 
 const MoveDirections = {
     Left: 'Left',
@@ -33,7 +34,7 @@ var bulletScale = .5;
 
 function preload() {
 	game.load.image('worm', 'assets/sprites/worm.png');
-    game.load.image('bullet', 'assets/sprites/bullet.png');
+    game.load.image('grenade', 'assets/sprites/bullet.png');
 	game.load.image('worm_inverted', 'assets/sprites/worm_inverted.png');
 	game.load.image('ground', 'assets/sprites/ground.gif');
     game.load.image('ground_tile', 'assets/sprites/ground.jpg');
@@ -125,11 +126,12 @@ function create() {
 
     groundCollisionGroup = game.physics.p2.createCollisionGroup();
     wormCollisionGroup = game.physics.p2.createCollisionGroup();
+    bulletCollisionGroup = game.physics.p2.createCollisionGroup();
 
     setWormCollisions(worm)
 
     ground.body.setCollisionGroup(groundCollisionGroup);
-    ground.body.collides(wormCollisionGroup, landWorm, this);
+    ground.body.collides([wormCollisionGroup, bulletCollisionGroup], landWorm, this);
 
     speechRecognizer = new WormsSpeachRecognizer(['прыжок', 'влево', 'вправо', 'Лего'])
 
@@ -157,7 +159,7 @@ function handleSpeechCommand(command) {
 
 function setWormCollisions(worm) {
     worm.body.setCollisionGroup(wormCollisionGroup);
-    worm.body.collides([groundCollisionGroup, wormCollisionGroup]);
+    worm.body.collides([groundCollisionGroup, wormCollisionGroup, bulletCollisionGroup]);
 }
 
 function landWorm() {
@@ -218,15 +220,21 @@ function fire (x, y, dx, dy) {
 }
 
 function createBullet (game, start, diff) {
-  var bullet = game.add.sprite(start.x, start.y, 'bullet');
-  game.physics.p2.enable(bullet, true);
-  bullet.body.clearShapes();
-  bullet.scale.x = bulletScale;
-  bullet.scale.y = bulletScale;
-  bullet.body.loadPolygon('physics', 'grenade', bulletScale);
-  bullet.body.fixedRotation = true;
-  // FIXIME Здесь баг
-  // bullet.body.velocity.x = diff.x
-  // bullet.body.velocity.y = diff.y
-  return bullet
+  var sprite = game.add.sprite(start.x, start.y - 50, 'grenade');
+  game.physics.p2.enable(sprite, true);
+  sprite.scale.x = 0.2
+  sprite.scale.y = 0.2
+  sprite.body.clearShapes();
+  sprite.body.loadPolygon('physics', 'grenade', 0.2);
+  sprite.body.setCollisionGroup(bulletCollisionGroup);
+  sprite.body.collides([groundCollisionGroup, wormCollisionGroup, bulletCollisionGroup], () => {}, this);
+
+
+	sprite.body.fixedRotation = true;
+  sprite.body.velocity.x = -diff.dx * 10
+  sprite.body.velocity.y = -diff.dy * 10
+  sprite.body.onBeginContact.add(function(body, bodyB, shapeA, shapeB, equation){
+    console.log(body, bodyB, shapeA, shapeB, equation);
+  }, this);
+  return sprite
 }
