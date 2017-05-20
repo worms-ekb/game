@@ -275,4 +275,6 @@ function drawBoom(x, y) {
     var music = game.add.audio('boom_sound');
 
     music.play();
+    game.canvas.classList.add('shake')
+    setTimeout(() => {game.canvas.classList.remove('shake')}, 1000)
 }
