@@ -177,6 +177,9 @@ function jump(worm) {
 }
 
 function moveLeft(worm, delta) {
+    if (worm._jumped) {
+        return
+    }
     worm.body.moveLeft(delta);
 
     worm.loadTexture('worm');
@@ -189,6 +192,9 @@ function moveLeft(worm, delta) {
 }
 
 function moveRight(worm, delta) {
+    if (worm._jumped) {
+        return
+    }
     worm.body.moveRight(delta);
     worm.loadTexture('worm_inverted');
     worm.body.clearShapes();
