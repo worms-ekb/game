@@ -1,15 +1,40 @@
-var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.CANVAS, 'worms', { create: create });
+var width = window.innerWidth
+var height = window.innerHeight
+
+var game = new Phaser.Game(width, height, Phaser.CANVAS, 'worms', { create: create });
 
 var poly;
 var graphics;
 
 function create() {
-
-    //  You can also create an empty Polygon:
     poly = new Phaser.Polygon();
+    var randomLine = [];
+    var trandsCount = 4;
+    var tailsCount = 20 ;
+    var trandWidth = width / trandsCount;
+    var pointY = (Math.random() * 0.5 + 0.4) * height;
 
-    //  And then populate it via setTo, using any combination of values as above
-    poly.setTo([ new Phaser.Point(200, 100), new Phaser.Point(350, 100), new Phaser.Point(375, 200), new Phaser.Point(150, 200) ]);
+    for(var i = 0; i <= trandsCount; i++) {
+      var trand = Math.random() * 0.2 - 0.1;
+
+      for (var j = 0; j < tailsCount; j++) {
+        var pointX = trandWidth * i + trandWidth / tailsCount * j;
+        pointY += Math.random() * 0.5 * trand * height / 2;
+        if (pointY > height * 0.9 || pointY < height * 0.4) {
+          trand *= -1
+          console.log('trand change');
+        }
+        var point = new Phaser.Point(pointX, pointY)
+
+        randomLine.push(point);
+      }
+    }
+
+    poly.setTo(randomLine.concat([
+      new Phaser.Point(width, height/2),
+      new Phaser.Point(width, height),
+      new Phaser.Point(0, height)
+    ]));
 
 
 
