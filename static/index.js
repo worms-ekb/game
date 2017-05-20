@@ -18,6 +18,14 @@ var worm;
 var ground;
 var cursors;
 var wormScale = .5;
+var speechRecognizer;
+var groundCollisionGroup;
+var wormCollisionGroup;
+
+const MoveDirections = {
+    Left: 'Left',
+    Right: 'Right'
+}
 
 function preload() {
 	game.load.image('worm', 'assets/sprites/worm.png');
@@ -58,6 +66,7 @@ function gerPoygon() {
 
 function create() {
     game.physics.startSystem(Phaser.Physics.P2JS);
+    game.physics.p2.updateBoundsCollisionGroup()
 
     poly = new Phaser.Polygon();
     poly.setTo(
@@ -103,45 +112,87 @@ function create() {
 
     cursors = game.input.keyboard.createCursorKeys();
 
-    var groundCollisionGroup = game.physics.p2.createCollisionGroup();
-    var wormCollisionGroup = game.physics.p2.createCollisionGroup();
+    groundCollisionGroup = game.physics.p2.createCollisionGroup();
+    wormCollisionGroup = game.physics.p2.createCollisionGroup();
 
-    worm.body.setCollisionGroup(wormCollisionGroup);
-    worm.body.collides([groundCollisionGroup, wormCollisionGroup]);
-    
+    setWormCollisions(worm)
+
     ground.body.setCollisionGroup(groundCollisionGroup);
     ground.body.collides(wormCollisionGroup, landWorm, this);
 
+    speechRecognizer = new WormsSpeachRecognizer(['прыжок', 'влево', 'вправо'])
+
+    speechRecognizer.onResult(handleSpeechCommand)
+    speechRecognizer.start()
+}
+
+function handleSpeechCommand(command) {
+    if (command.includes('влево')) {
+        moveLeft(worm, 300)
+    }
+    if (command.includes('вправо')) {
+        moveRight(worm, 300)
+    }
+    if (command.includes('прыжок')) {
+        jump(worm)
+    }
+}
+
+function setWormCollisions(worm) {
+    worm.body.setCollisionGroup(wormCollisionGroup);
+    worm.body.collides([groundCollisionGroup, wormCollisionGroup]);
 }
 
 function landWorm() {
     worm._jumped = false
+    speechRecognizer.start()
+}
+
+function jump(worm) {
+    worm._jumped = true
+    if (worm._moveDirection === MoveDirections.Right) {
+        worm.body.moveRight(300)
+    } else {
+        worm.body.moveLeft(300)
+    }
+    worm.body.moveUp(300)
+}
+
+function moveLeft(worm, delta) {
+    worm.body.moveLeft(delta);
+
+    worm.loadTexture('worm');
+    worm.body.clearShapes();
+    worm.body.loadPolygon('physics', 'worm', wormScale);
+
+    setWormCollisions(worm)
+
+    worm._moveDirection = MoveDirections.Left
+}
+
+function moveRight(worm, delta) {
+    worm.body.moveRight(delta);
+    worm.loadTexture('worm_inverted');
+    worm.body.clearShapes();
+    worm.body.loadPolygon('physics', 'worm_inverted', wormScale);
+
+    setWormCollisions(worm)
+
+    worm._moveDirection = MoveDirections.Right
 }
 
 function update() {
 	if (cursors.left.isDown) {
-    	worm.body.moveLeft(100);
-
-        worm.loadTexture('worm');
-        worm.body.clearShapes();
-        worm.body.loadPolygon('physics', 'worm', wormScale);
-
-        return;
+    	moveLeft(worm, 100)
+        return
     }
 
     if (cursors.right.isDown) {
-    	worm.body.moveRight(100);
-
-        worm.loadTexture('worm_inverted');
-        worm.body.clearShapes();
-        worm.body.loadPolygon('physics', 'worm_inverted', wormScale);
-
+        moveRight(worm, 100)
         return;
     }
 
     if (cursors.up.isDown && !worm._jumped) {
-        worm._jumped = true
-        worm.body.moveRight(300)
-        worm.body.moveUp(300)
+        jump(worm)
     }
 }
