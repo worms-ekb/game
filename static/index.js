@@ -18,7 +18,7 @@ var worm;
 var ground;
 var cursors;
 var wormScale = .5;
-<<<<<<< HEAD
+
 var speechRecognizer;
 var groundCollisionGroup;
 var wormCollisionGroup;

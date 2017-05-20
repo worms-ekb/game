@@ -41,7 +41,8 @@ class WormsSpeachRecognizer {
     this.recognition.onresult = function(event) {
       var last = event.results.length - 1
       var command = event.results[last][0].transcript
-      speechSynthesis.speak(new SpeechSynthesisUtterance(command))
+      console.log(command)
+      // speechSynthesis.speak(new SpeechSynthesisUtterance(command))
       window.navigator.vibrate(300)
       console.log('Confidence: ' + event.results[0][0].confidence)
       handler(command)
