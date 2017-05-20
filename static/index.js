@@ -35,6 +35,7 @@ function preload() {
     game.load.image('bullet', 'assets/sprites/bullet.png');
 	game.load.image('worm_inverted', 'assets/sprites/worm_inverted.png');
 	game.load.image('ground', 'assets/sprites/ground.gif');
+    game.load.image('ground_tile', 'assets/sprites/ground.jpg');
 	game.load.physics('physics', 'assets/physics.json');
 }
 
@@ -81,11 +82,15 @@ function create() {
             ])
     );
 
+    game.tilepoly = game.add.tileSprite(0, 0, width, height, 'ground_tile');
+
     graphics = game.add.graphics(0, 0);
 
-    graphics.beginFill(0xFF33ff);
+    graphics.beginFill(0xFFFFFF, 1);
     graphics.drawPolygon(poly.points);
     graphics.endFill();
+
+    game.tilepoly.mask = graphics;
 
 	worm = game.add.sprite(32, 32, 'worm');
     ground = game.add.sprite(0, 0, 'ground');
@@ -93,7 +98,7 @@ function create() {
     ground.width = width;
     ground.height = height;
 
-    game.physics.p2.enable([worm, ground], true);
+    game.physics.p2.enable([worm, ground]);
     game.physics.p2.gravity.y = 1000;
     game.physics.p2.restitution = 0.2;
     game.physics.p2.setImpactEvents(true);
