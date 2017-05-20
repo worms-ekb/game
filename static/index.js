@@ -102,7 +102,7 @@ function create() {
 
     game.tilepoly.mask = graphics;
 
-	worm = game.add.sprite(32, 32, 'worm');
+	worm = game.add.sprite(402, 32, 'worm');
     ground = game.add.sprite(0, 0, 'ground');
 
     ground.width = width;
@@ -275,4 +275,9 @@ function drawBoom(x, y) {
     var music = game.add.audio('boom_sound');
 
     music.play();
+
+    var deltaX = worm.centerX - x;
+
+    worm.body.velocity.x = 30000 / deltaX;
+    worm.body.velocity.y = -32000 / Math.abs(deltaX);
 }
