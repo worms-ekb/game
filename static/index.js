@@ -70,6 +70,7 @@ function create() {
     game.physics.p2.enable([worm, ground], true);
     game.physics.p2.gravity.y = 1000;
     game.physics.p2.restitution = 0.2;
+    game.physics.p2.setImpactEvents(true);
 
     worm.body.fixedRotation = true;
     worm.body.clearShapes();
@@ -86,18 +87,36 @@ function create() {
     ground.body.addPolygon.apply(ground.body, points);
 
     cursors = game.input.keyboard.createCursorKeys();
+
+    var groundCollisionGroup = game.physics.p2.createCollisionGroup();
+    var wormCollisionGroup = game.physics.p2.createCollisionGroup();
+
+    worm.body.setCollisionGroup(wormCollisionGroup);
+    worm.body.collides([groundCollisionGroup, wormCollisionGroup]);
+    
+    ground.body.setCollisionGroup(groundCollisionGroup);
+    ground.body.collides(wormCollisionGroup, landWorm, this);
+
+}
+
+function landWorm() {
+    worm._jumped = false
 }
 
 function update() {
 	if (cursors.left.isDown) {
     	worm.body.moveLeft(100);
-
         return;
     }
 
     if (cursors.right.isDown) {
     	worm.body.moveRight(100);
-
         return;
+    }
+
+    if (cursors.up.isDown && !worm._jumped) {
+        worm._jumped = true
+        worm.body.moveRight(300)
+        worm.body.moveUp(300)
     }
 }
