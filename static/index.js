@@ -17,6 +17,7 @@ var graphics;
 var worm;
 var ground;
 var cursors;
+var wormScale = .5;
 
 function preload() {
 	game.load.image('worm', 'assets/sprites/worm.png');
@@ -74,7 +75,9 @@ function create() {
 
     worm.body.fixedRotation = true;
     worm.body.clearShapes();
-    worm.body.loadPolygon('physics', 'worm');
+    worm.scale.x = wormScale;
+    worm.scale.y = wormScale;
+    worm.body.loadPolygon('physics', 'worm', wormScale);
 
     ground.body.static = true;
     ground.body.fixedRotation = true;
@@ -95,7 +98,7 @@ function update() {
 
         worm.loadTexture('worm');
         worm.body.clearShapes();
-        worm.body.loadPolygon('physics', 'worm');
+        worm.body.loadPolygon('physics', 'worm', wormScale);
 
         return;
     }
@@ -105,7 +108,7 @@ function update() {
 
         worm.loadTexture('worm_inverted');
         worm.body.clearShapes();
-        worm.body.loadPolygon('physics', 'worm_inverted');
+        worm.body.loadPolygon('physics', 'worm_inverted', wormScale);
 
         return;
     }
