@@ -1,12 +1,32 @@
 var width = window.innerWidth
 var height = window.innerHeight
 
-var game = new Phaser.Game(width, height, Phaser.CANVAS, 'worms', { create: create });
+var game = new Phaser.Game(
+    width,
+    height,
+    Phaser.CANVAS,
+    'worms',
+    {
+        preload: preload,
+        create: create,
+        update: update
+    });
 
 var poly;
 var graphics;
+var worm;
+var ground;
+var cursors;
+
+function preload() {
+	game.load.image('worm', 'assets/sprites/worm.png');
+	game.load.image('ground', 'assets/sprites/ground.gif');
+	game.load.physics('physics', 'assets/physics.json');
+}
 
 function create() {
+    game.physics.startSystem(Phaser.Physics.P2JS);
+
     poly = new Phaser.Polygon();
     var randomLine = [];
     var trandsCount = 4;
@@ -35,12 +55,49 @@ function create() {
       new Phaser.Point(0, height)
     ]));
 
-
-
     graphics = game.add.graphics(0, 0);
 
     graphics.beginFill(0xFF33ff);
     graphics.drawPolygon(poly.points);
     graphics.endFill();
 
+	worm = game.add.sprite(32, 32, 'worm');
+    ground = game.add.sprite(0, 0, 'ground');
+
+    ground.width = width;
+    ground.height = height;
+
+    game.physics.p2.enable([worm, ground], true);
+    game.physics.p2.gravity.y = 1000;
+    game.physics.p2.restitution = 0.2;
+
+    worm.body.fixedRotation = true;
+    worm.body.clearShapes();
+    worm.body.loadPolygon('physics', 'worm');
+
+    ground.body.static = true;
+    ground.body.fixedRotation = true;
+    ground.body.clearShapes();
+
+    var points = poly.toNumberArray();
+
+    points.unshift({});
+
+    ground.body.addPolygon.apply(ground.body, points);
+
+    cursors = game.input.keyboard.createCursorKeys();
+}
+
+function update() {
+	if (cursors.left.isDown) {
+    	worm.body.moveLeft(100);
+
+        return;
+    }
+
+    if (cursors.right.isDown) {
+    	worm.body.moveRight(100);
+
+        return;
+    }
 }
