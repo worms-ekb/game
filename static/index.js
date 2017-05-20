@@ -26,17 +26,16 @@ function preload() {
 	game.load.physics('physics', 'assets/physics.json');
 }
 
-function create() {
-    game.physics.startSystem(Phaser.Physics.P2JS);
-
-    poly = new Phaser.Polygon();
+function gerPoygon() {
     var randomLine = [];
-    var trandsCount = 4;
-    var tailsCount = 20 ;
+
+    var trandsCount = 5;
+    var tailsCount = 10 ;
+
     var trandWidth = width / trandsCount;
     var pointY = (Math.random() * 0.5 + 0.4) * height;
 
-    for(var i = 0; i <= trandsCount; i++) {
+    for(var i = 0; i < trandsCount; i++) {
       var trand = Math.random() * 0.2 - 0.1;
 
       for (var j = 0; j < tailsCount; j++) {
@@ -51,11 +50,23 @@ function create() {
       }
     }
 
-    poly.setTo(randomLine.concat([
-      new Phaser.Point(width, height/2),
-      new Phaser.Point(width, height),
-      new Phaser.Point(0, height)
-    ]));
+    var point = new Phaser.Point(width, pointY)
+    randomLine.push(point);
+
+    return randomLine;
+}
+
+function create() {
+    game.physics.startSystem(Phaser.Physics.P2JS);
+
+    poly = new Phaser.Polygon();
+    poly.setTo(
+        gerPoygon()
+            .concat([
+                new Phaser.Point(width, height),
+                new Phaser.Point(0, height)
+            ])
+    );
 
     graphics = game.add.graphics(0, 0);
 
