@@ -20,6 +20,7 @@ var cursors;
 
 function preload() {
 	game.load.image('worm', 'assets/sprites/worm.png');
+	game.load.image('worm_inverted', 'assets/sprites/worm_inverted.png');
 	game.load.image('ground', 'assets/sprites/ground.gif');
 	game.load.physics('physics', 'assets/physics.json');
 }
@@ -106,11 +107,21 @@ function landWorm() {
 function update() {
 	if (cursors.left.isDown) {
     	worm.body.moveLeft(100);
+
+        worm.loadTexture('worm');
+        worm.body.clearShapes();
+        worm.body.loadPolygon('physics', 'worm');
+
         return;
     }
 
     if (cursors.right.isDown) {
     	worm.body.moveRight(100);
+
+        worm.loadTexture('worm_inverted');
+        worm.body.clearShapes();
+        worm.body.loadPolygon('physics', 'worm_inverted');
+
         return;
     }
 
