@@ -37,6 +37,7 @@ function preload() {
 	game.load.image('ground', 'assets/sprites/ground.gif');
     game.load.image('ground_tile', 'assets/sprites/ground.jpg');
 	game.load.physics('physics', 'assets/physics.json');
+    game.load.spritesheet('waters', './assets/sprites/waters.png', 32, 400, 32);
 }
 
 function gerPoygon() {
@@ -133,6 +134,11 @@ function create() {
 
     speechRecognizer.onResult(handleSpeechCommand)
     speechRecognizer.start()
+
+    var water = game.add.tileSprite(0, height * 0.9, width, height * 0.9, 'waters');
+
+    water.animations.add('waves', [0, 1, 2, 3, 2, 1]);
+    water.animations.play('waves', 8, true);
 }
 
 function handleSpeechCommand(command) {
