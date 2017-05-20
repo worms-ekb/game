@@ -29,3 +29,6 @@ class Rocket extends Weapon {
     this.bullet.reactiveMove(power, angle);
   }
 }
+
+module.exports = Weapon
+module.exports.Rocket = Rocket

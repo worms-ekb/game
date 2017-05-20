@@ -9,7 +9,7 @@ interface Weapon extends WorldObject {
 }
 
 interface Bullet {
-obj: SAT;
+  obj: SAT;
 }
 
 interface Player {
@@ -47,12 +47,4 @@ interface World {
 
 interface Map {
   obj: SAT;
-}
-
-class Game {
-  constructor(world) {
-    addCreatures();
-    world.initMap();
-    initTeams();
-  }
 }

@@ -5,19 +5,23 @@ class Worm {
     this.obj = obj;
     this._name = name;
     this._hp = hp;
-    this.isAlive = true;
   }
-  
+
+  get hp() {
+    return this._hp;
+  }
+
+  get isAlive() {
+    return this._hp > 0;
+  }
+
   receiveDamage(damage) {
     this._hp -= damage;
 
-    if (this._hp <= 0) {
-      this.die();
-    }
   }
 
   die() {
-    this.isAlive = false;
+    this._hp = 0;
   }
 
   fire(power, angle) {
@@ -28,3 +32,5 @@ class Worm {
     this.obj.move(this.speed, direction);
   }
 }
+
+module.exports = Worm
