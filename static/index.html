@@ -9,14 +9,40 @@
       height: 100%;
       margin: 0;
     }
+    video {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 100px;
+    }
     </style>
 </head>
 <body>
     <div id='worms'></div>
+    <video src=""></video>
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/custom/p2.min.js"></script>
     <script type="text/javascript" src="phaser.min.js"></script>
     <script type="text/javascript" src="touch.js"></script>
     <script type="text/javascript" src="index.js"></script>
     <script type="text/javascript" src="speech.js"></script>
+    <script>
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia({ audio: true, video: { width: 1280, height: 720 } },
+                function(stream) {
+                    var video = document.querySelector('video');
+                    video.srcObject = stream;
+                    video.onloadedmetadata = function(e) {
+                    video.play();
+                    };
+                },
+                function(err) {
+                    console.log("The following error occurred: " + err.name);
+                }
+            );
+            } else {
+            console.log("getUserMedia not supported");
+        }
+    </script>
 </body>
 </html>
