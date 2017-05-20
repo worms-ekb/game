@@ -18,9 +18,11 @@ var worm;
 var ground;
 var cursors;
 var wormScale = .5;
+var bullet;
 
 function preload() {
 	game.load.image('worm', 'assets/sprites/worm.png');
+  game.load.image('bullet', 'assets/sprites/bullet.png');
 	game.load.image('worm_inverted', 'assets/sprites/worm_inverted.png');
 	game.load.image('ground', 'assets/sprites/ground.gif');
 	game.load.physics('physics', 'assets/physics.json');
@@ -123,4 +125,19 @@ function update() {
 
         return;
     }
+}
+
+function fire (x, y, dx, dy) {
+  bullet = createBullet(game, {x: x, y: y}, { dx: dx, dy: dy })
+}
+
+function createBullet (game, start, diff) {
+  var sprite = game.add.sprite(start.x, start.y, 'bullet');
+  game.physics.p2.enable(sprite, true);
+  // sprite.body.clearShapes();
+  sprite.body.loadPolygon('physics', 'bullet');
+	sprite.body.fixedRotation = true;
+  sprite.body.velocity.x = diff.x
+  sprite.body.velocity.y = diff.y
+  return sprite
 }
