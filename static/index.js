@@ -102,7 +102,7 @@ function create() {
 
     game.tilepoly.mask = graphics;
 
-	worm = game.add.sprite(32, 32, 'worm');
+	worm = game.add.sprite(Math.random() * width, 32, 'worm');
     ground = game.add.sprite(0, 0, 'ground');
 
     ground.width = width;
@@ -237,7 +237,10 @@ function fire (x, y, dx, dy) {
   setTimeout(function () {
       bullet.mass = 2000;
       drawBoom(bullet.centerX, bullet.centerY);
-      window.navigator.vibrate(300);
+
+      try {
+          window.navigator.vibrate(300);
+      } catch(err) {}
 
       bullet.kill();
   }, 2000)
@@ -277,4 +280,9 @@ function drawBoom(x, y) {
     music.play();
     game.canvas.classList.add('shake')
     setTimeout(() => {game.canvas.classList.remove('shake')}, 1000)
+
+    var deltaX = worm.centerX - x;
+
+    worm.body.velocity.x = 30000 / deltaX;
+    worm.body.velocity.y = -32000 / Math.abs(deltaX);
 }
