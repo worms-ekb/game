@@ -17,6 +17,7 @@ var graphics;
 var worm;
 var ground;
 var cursors;
+var bg;
 var wormScale = .5;
 
 var speechRecognizer;
@@ -33,13 +34,14 @@ var bullet;
 var bulletScale = .5;
 
 function preload() {
+	game.load.image('sky', 'assets/sprites/sky.jpg');
 	game.load.image('worm', 'assets/sprites/worm.png');
-    game.load.image('grenade', 'assets/sprites/bullet.png');
+  game.load.image('grenade', 'assets/sprites/bullet.png');
 	game.load.image('worm_inverted', 'assets/sprites/worm_inverted.png');
 	game.load.image('ground', 'assets/sprites/ground.gif');
-    game.load.image('ground_tile', 'assets/sprites/ground.jpg');
+  game.load.image('ground_tile', 'assets/sprites/ground.jpg');
 	game.load.physics('physics', 'assets/physics.json');
-    game.load.spritesheet('waters', './assets/sprites/waters.png', 32, 400, 32);
+  game.load.spritesheet('waters', './assets/sprites/waters.png', 32, 400, 32);
 }
 
 function gerPoygon() {
@@ -75,6 +77,7 @@ function gerPoygon() {
 function create() {
     game.physics.startSystem(Phaser.Physics.P2JS);
     game.physics.p2.updateBoundsCollisionGroup()
+    game.add.image(0, 0, 'sky')
 
     poly = new Phaser.Polygon();
     poly.setTo(
@@ -89,7 +92,7 @@ function create() {
 
     graphics = game.add.graphics(0, 0);
 
-    graphics.beginFill(0xFFFFFF, 1);
+    graphics.beginFill(0x74B2E9, 1);
     graphics.drawPolygon(poly.points);
     graphics.endFill();
 
