@@ -235,6 +235,7 @@ function fire (x, y, dx, dy) {
   setTimeout(function () {
       bullet.mass = 2000;
       drawBoom(bullet.centerX, bullet.centerY);
+      window.navigator.vibrate(300);
 
       bullet.kill();
   }, 2000)
