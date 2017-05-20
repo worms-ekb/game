@@ -19,13 +19,14 @@ var ground;
 var cursors;
 var wormScale = .5;
 var bullet;
+var bulletScale = .5;
 
 function preload() {
-	game.load.image('worm', 'assets/sprites/worm.png');
-  game.load.image('bullet', 'assets/sprites/bullet.png');
-	game.load.image('worm_inverted', 'assets/sprites/worm_inverted.png');
-	game.load.image('ground', 'assets/sprites/ground.gif');
-	game.load.physics('physics', 'assets/physics.json');
+    game.load.image('worm', 'assets/sprites/worm.png');
+    game.load.image('bullet', 'assets/sprites/bullet.png');
+    game.load.image('worm_inverted', 'assets/sprites/worm_inverted.png');
+    game.load.image('ground', 'assets/sprites/ground.gif');
+    game.load.physics('physics', 'assets/physics.json');
 }
 
 function gerPoygon() {
@@ -132,12 +133,15 @@ function fire (x, y, dx, dy) {
 }
 
 function createBullet (game, start, diff) {
-  var sprite = game.add.sprite(start.x, start.y, 'bullet');
-  game.physics.p2.enable(sprite, true);
-  // sprite.body.clearShapes();
-  sprite.body.loadPolygon('physics', 'bullet');
-	sprite.body.fixedRotation = true;
-  sprite.body.velocity.x = diff.x
-  sprite.body.velocity.y = diff.y
-  return sprite
+  var bullet = game.add.sprite(start.x, start.y, 'bullet');
+  game.physics.p2.enable(bullet, true);
+  bullet.body.clearShapes();
+  bullet.scale.x = bulletScale;
+  bullet.scale.y = bulletScale;
+  bullet.body.loadPolygon('physics', 'grenade', bulletScale);
+  bullet.body.fixedRotation = true;
+  // FIXIME Здесь баг
+  // bullet.body.velocity.x = diff.x
+  // bullet.body.velocity.y = diff.y
+  return bullet
 }
