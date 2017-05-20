@@ -132,7 +132,7 @@ function create() {
     speechRecognizer = new WormsSpeachRecognizer(['прыжок', 'влево', 'вправо', 'Лего'])
 
     speechRecognizer.onResult(handleSpeechCommand)
-    setInterval(() => {speechRecognizer.start()}, 1000)
+    // setInterval(() => {speechRecognizer.start()}, 1000)
     speechRecognizer.start()
 }
 
@@ -140,7 +140,7 @@ function handleSpeechCommand(command) {
     if (~command.indexOf('лев') || ~command.includes('Лего')) {
         moveLeft(worm, 300)
     }
-    if (~command.indexOf('прав') || ~command.indexOf('брав')) {
+    if (~command.indexOf('рав') || ~command.indexOf('рав')) {
         moveRight(worm, 300)
     }
     if (~command.indexOf('прыж') || ~command.indexOf('прыг')) {
@@ -154,7 +154,6 @@ function setWormCollisions(worm) {
 }
 
 function landWorm() {
-    console.log('land')
     worm._jumped = false
 }
 

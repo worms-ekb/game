@@ -25,6 +25,9 @@ class WormsSpeachRecognizer {
       this._started = false
       this.recognition.stop()
     }
+    this.recognition.onend = () => {
+      this.start()
+    }
   }
 
   start() {
