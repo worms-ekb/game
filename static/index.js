@@ -183,6 +183,7 @@ function jump(worm) {
         worm.body.moveLeft(300)
     }
     worm.body.moveUp(300)
+    speechSynthesis.speak(new SpeechSynthesisUtterance('Прыжок'))
 }
 
 function moveLeft(worm, delta) {
@@ -230,6 +231,7 @@ function update() {
 
 function fire (x, y, dx, dy) {
   var bullet = createBullet(game, {x: x, y: y}, { dx: dx, dy: dy });
+  speechSynthesis.speak(new SpeechSynthesisUtterance('Огонь!'))
 
   setTimeout(function () {
       bullet.mass = 2000;
