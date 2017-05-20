@@ -21,7 +21,6 @@ class WormsSpeachRecognizer {
     this.recognition.maxAlternatives = 1
 
     this.recognition.onspeechend = () => {
-      console.log('End', this._started)
       this._started = false
       this.recognition.stop()
     }
@@ -34,7 +33,6 @@ class WormsSpeachRecognizer {
     if (this._started) {
       return
     }
-    console.log('Start', this._started)
     this.recognition.start()
     this._started = true
   }
@@ -46,7 +44,6 @@ class WormsSpeachRecognizer {
       console.log(command)
       // speechSynthesis.speak(new SpeechSynthesisUtterance(command))
       window.navigator.vibrate(300)
-      console.log('Confidence: ' + event.results[0][0].confidence)
       handler(command)
     }
   }
