@@ -220,7 +220,7 @@ function fire (x, y, dx, dy) {
 }
 
 function createBullet (game, start, diff) {
-  var sprite = game.add.sprite(start.x, start.y - 50, 'grenade');
+  var sprite = game.add.sprite(worm.body.x, worm.body.y - 50, 'grenade');
   game.physics.p2.enable(sprite, true);
   sprite.scale.x = 0.2
   sprite.scale.y = 0.2
@@ -233,8 +233,8 @@ function createBullet (game, start, diff) {
 	sprite.body.fixedRotation = true;
   sprite.body.velocity.x = -diff.dx * 10
   sprite.body.velocity.y = -diff.dy * 10
-  sprite.body.onBeginContact.add(function(body, bodyB, shapeA, shapeB, equation){
-    console.log(body, bodyB, shapeA, shapeB, equation);
-  }, this);
+  // sprite.body.onBeginContact.add(function(body, bodyB, shapeA, shapeB, equation){
+  //   console.log(body, bodyB, shapeA, shapeB, equation);
+  // }, this);
   return sprite
 }
