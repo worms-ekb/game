@@ -30,7 +30,6 @@ const MoveDirections = {
     Right: 'Right'
 }
 
-var bullet;
 var bulletScale = .5;
 
 function preload() {
@@ -42,6 +41,10 @@ function preload() {
   game.load.image('ground_tile', 'assets/sprites/ground.jpg');
 	game.load.physics('physics', 'assets/physics.json');
   game.load.spritesheet('waters', './assets/sprites/waters.png', 32, 400, 32);
+  game.load.image('fire1', 'assets/particles/fire1.png');
+  game.load.image('fire2', 'assets/particles/fire2.png');
+  game.load.image('fire3', 'assets/particles/fire3.png');
+  game.load.image('smoke', 'assets/particles/smoke.png');
 }
 
 function gerPoygon() {
@@ -136,7 +139,7 @@ function create() {
     ground.body.setCollisionGroup(groundCollisionGroup);
     ground.body.collides([wormCollisionGroup, bulletCollisionGroup], landWorm, this);
 
-    speechRecognizer = new WormsSpeachRecognizer(['прыжок', 'влево', 'вправо', 'Лего'])
+    speechRecognizer = new WormsSpeachRecognizer(['рав', 'лев', 'прыж', 'прыг'])
 
     speechRecognizer.onResult(handleSpeechCommand)
     // setInterval(() => {speechRecognizer.start()}, 1000)
@@ -149,7 +152,7 @@ function create() {
 }
 
 function handleSpeechCommand(command) {
-    if (~command.indexOf('лев') || ~command.includes('Лего')) {
+    if (~command.indexOf('лев') || ~command.indexOf('Лего')) {
         moveLeft(worm, 300)
     }
     if (~command.indexOf('рав') || ~command.indexOf('рав')) {
@@ -225,7 +228,14 @@ function update() {
 }
 
 function fire (x, y, dx, dy) {
-  bullet = createBullet(game, {x: x, y: y}, { dx: dx, dy: dy })
+  var bullet = createBullet(game, {x: x, y: y}, { dx: dx, dy: dy });
+
+  setTimeout(function () {
+      bullet.mass = 2000;
+      drawBoom(bullet.centerX, bullet.centerY);
+
+      bullet.kill();
+  }, 2000)
 }
 
 function createBullet (game, start, diff) {
@@ -240,12 +250,20 @@ function createBullet (game, start, diff) {
 
 
 	sprite.body.fixedRotation = true;
-  sprite.body.velocity.x = -diff.dx * 10
-  sprite.body.velocity.y = -diff.dy * 10
-  sprite.body.onBeginContact.add(function(body, bodyB, shapeA, shapeB, equation) {
-    if (body && body.sprite.key === 'ground') {
-      bullet.kill()
-    }
-  }, this);
-  return sprite
+  sprite.body.velocity.x = -diff.dx * 10;
+  sprite.body.velocity.y = -diff.dy * 10;
+
+  return sprite;
+}
+
+function drawBoom(x, y) {
+    var emitter = game.add.emitter(x, y, 400);
+
+    emitter.makeParticles(['fire1', 'fire2', 'fire3', 'smoke']);
+
+    emitter.gravity = 100;
+    emitter.setAlpha(1, 0, 3000);
+    emitter.setScale(0.8, 0, 0.8, 0, 3000);
+
+    emitter.start(false, 500, 5, 20);
 }
