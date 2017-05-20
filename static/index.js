@@ -214,12 +214,10 @@ function moveRight(worm, delta) {
 function update() {
 	if (cursors.left.isDown) {
     	moveLeft(worm, 100)
-        return
     }
 
     if (cursors.right.isDown) {
         moveRight(worm, 100)
-        return;
     }
 
     if (cursors.up.isDown && !worm._jumped) {
