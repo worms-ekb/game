@@ -102,7 +102,7 @@ function create() {
 
     game.tilepoly.mask = graphics;
 
-	worm = game.add.sprite(402, 32, 'worm');
+	worm = game.add.sprite(Math.random() * width, 32, 'worm');
     ground = game.add.sprite(0, 0, 'ground');
 
     ground.width = width;
